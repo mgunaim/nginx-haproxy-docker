@@ -24,9 +24,9 @@ services:
     haproxy:
         build: ./haproxy
         ports:
-            - 80:80
+            - 8080:80
         expose:
-            - 80
+            - 8080
         networks:
             public_net:
                 ipv4_address: ${HA_PROXY_IP}
