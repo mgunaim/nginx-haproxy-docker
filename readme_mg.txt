@@ -20,6 +20,7 @@ microk8s ctr images list -q | grep nginx-haproxy-docker_nginx_web_2
 
 
 docker rmi 10.0.1.1:32000/nginx-haproxy-docker_haproxy -f
+microk8s ctr images remove
 docker build . -t 10.0.1.1:32000/nginx-haproxy-docker_haproxy:registry
 docker push 10.0.1.1:32000/nginx-haproxy-docker_haproxy:registry
 microk8s ctr images list -q | grep nginx-haproxy-docker_haproxy
