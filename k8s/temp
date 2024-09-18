@@ -1,0 +1,147 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: haproxy
+spec:
+  selector:
+    matchLabels:
+      app: haproxy
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: haproxy
+    spec:
+      containers:
+      - name: haproxy
+        image: localhost:32000/nginx-haproxy-docker_haproxy:registry
+        ports:
+          - containerPort: 80
+            protocol: TCP
+          - containerPort: 88
+            protocol: TCP
+          - containerPort: 8080
+            protocol: TCP
+        env:
+        - name: DB_HOST
+          value: mysqldb
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.34.0 (cbf2835db)
+  labels:
+    io.kompose.service: haproxy
+  name: haproxy
+spec:
+  ports:
+    - name: "8080"
+      port: 8080
+      targetPort: 80
+    - name: "88"
+      port: 88
+      targetPort: 88
+    # - name: 8080-tcp
+    #   port: 8080
+    #   targetPort: 8080
+    # - name: 88-tcp
+    #   port: 88
+    #   targetPort: 88
+  selector:
+    io.kompose.service: haproxy
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: haproxy
+spec:
+  selector:
+    matchLabels:
+      app: haproxy
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: haproxy
+    spec:
+      containers:
+        - env:
+            - name: NGINX_1_IP
+            - name: NGINX_2_IP
+            - name: NGINX_EXPOSED_PORT
+        image: localhost:32000/nginx-haproxy-docker_haproxy:registry
+          name: haproxy
+          ports:
+            - containerPort: 80
+              protocol: TCP
+            - containerPort: 88
+              protocol: TCP
+            - containerPort: 8080
+              protocol: TCP
+      restartPolicy: Always
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    io.kompose.service: haproxy
+  name: haproxy
+spec:
+  ports:
+    - name: "8080"
+      port: 8080
+      targetPort: 80
+    - name: "88"
+      port: 88
+      targetPort: 88
+    # - name: 8080-tcp
+    #   port: 8080
+    #   targetPort: 8080
+    # - name: 88-tcp
+    #   port: 88
+    #   targetPort: 88
+  selector:
+    io.kompose.service: haproxy
+ ---------------------
+
+
+
+ apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: haproxy
+spec:
+  selector:
+    matchLabels:
+      app: haproxy
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: haproxy
+    spec:
+      containers:
+      - name: haproxy
+        image: localhost:32000/nginx-haproxy-docker_haproxy:registry
+        ports:
+          - containerPort: 80
+            protocol: TCP
+          - containerPort: 88
+            protocol: TCP
+          - containerPort: 8080
+            protocol: TCP
+        env:
+          - name: NGINX_1_IP
+            value: 1.1.1.1
+          - name: NGINX_2_IP
+            value: 1.1.1.1
+          - name: NGINX_EXPOSED_PORT
+            value: 1.1.1.1
+
